@@ -12,10 +12,14 @@ const QuickSearchView = () => {
   const [userInput, setUserInput] = useState('')
 
   const { userSearch } = useSelector((state) => state.quickSearch)
+  const { totalCards } = useSelector((state) => state.cards)
+  const cards = useSelector((state) => state.cards)
   const dispatch = useDispatch()
 
-  console.log('userInput', userInput)
-  console.log('userSearch', userSearch)
+  console.log(cards)
+  // console.log(totalCards)
+  // console.log('userInput', userInput)
+  // console.log('userSearch', userSearch)
 
   return (
     <Container textAlign="center">
@@ -34,14 +38,15 @@ const QuickSearchView = () => {
           Search
         </Button>
       </Input>
-      <div style={{ marginTop: '10px' }}>
-        Your search
-        <Header as="h3" color="grey">
-          {userSearch}
+      {totalCards > 0 && (
+        <Header as="h4" style={{ margin: '10px 0 10px 0' }}>
+          Your search:{' '}
+          <span style={{ textTransform: 'capitalize', color: 'grey' }}>
+            {userSearch}
+          </span>{' '}
+          - Matchs: <span style={{ color: 'grey' }}>{totalCards}</span> Cards
         </Header>
-      </div>
-
-      {/* <p>{userSearch}</p> */}
+      )}
     </Container>
   )
 }
