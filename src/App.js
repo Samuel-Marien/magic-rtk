@@ -1,12 +1,13 @@
-import Navbar from "./components/Navbar";
+import Navbar from './components/Navbar'
+import QuickSearchView from './app/features/quickSearch/QuickSearchView'
 
 function App() {
   return (
-    <div >
+    <div>
       <Navbar />
-      App components
+      <QuickSearchView />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
