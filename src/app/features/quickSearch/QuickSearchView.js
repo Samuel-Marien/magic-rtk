@@ -5,6 +5,8 @@ import { setUserSearch } from './quickSearchSlice'
 
 import { Input } from 'semantic-ui-react'
 import { Button } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 
 const QuickSearchView = () => {
   const [userInput, setUserInput] = useState('')
@@ -16,7 +18,7 @@ const QuickSearchView = () => {
   console.log('userSearch', userSearch)
 
   return (
-    <>
+    <Container textAlign="center">
       <Input
         action
         type="text"
@@ -32,9 +34,15 @@ const QuickSearchView = () => {
           Search
         </Button>
       </Input>
+      <div style={{ marginTop: '10px' }}>
+        Your search
+        <Header as="h3" color="grey">
+          {userSearch}
+        </Header>
+      </div>
 
-      <p>Your search: {userSearch}</p>
-    </>
+      {/* <p>{userSearch}</p> */}
+    </Container>
   )
 }
 
