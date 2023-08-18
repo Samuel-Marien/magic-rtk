@@ -1,48 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useHref } from 'react-router-dom'
 
 import { Menu } from 'semantic-ui-react'
 import { Icon } from 'semantic-ui-react'
 import { Header } from 'semantic-ui-react'
 
 const Navbar = () => {
-  const [activeItem, setActiveItem] = useState('home')
+  const [activeItem, setActiveItem] = useState('')
+  const test = useHref()
 
-  const handleItemClick = (e, { name }) => setActiveItem(name)
+  useEffect(() => {
+    if (test === '/') {
+      setActiveItem('home')
+    } else if (test === '/card-search') {
+      setActiveItem('cards')
+    } else if (test === '/set-search') {
+      setActiveItem('sets')
+    }
+  }, [test])
 
   return (
     <Menu stackable inverted style={{ borderRadius: '0px' }}>
-      <Menu.Item name="home" onClick={handleItemClick}>
+      <Menu.Item name="home">
         <Header
           color="grey"
-          as="h4"
+          as="h5"
           image="https://react.semantic-ui.com/logo.png"
-          content="MTG Card's Tracker"
+          content="MTG Tracker"
         />
       </Menu.Item>
 
-      <Menu.Item
-        name="home"
-        active={activeItem === 'home'}
-        onClick={handleItemClick}
-      >
-        <Icon name="home" color="grey" />
-        Home
+      <Menu.Item as="div" href="/" name="home" active={activeItem === 'home'}>
+        <Link to="/">
+          <Icon name="home" color="grey" />
+          Home
+        </Link>
       </Menu.Item>
-      <Menu.Item
-        name="cards"
-        active={activeItem === 'cards'}
-        onClick={handleItemClick}
-      >
-        <Icon name="tag" color="grey" />
-        Cards
+
+      <Menu.Item as="div" name="cards" active={activeItem === 'cards'}>
+        <Link to="/card-search">
+          <Icon name="tag" color="grey" />
+          Cards
+        </Link>
       </Menu.Item>
-      <Menu.Item
-        name="sets"
-        active={activeItem === 'sets'}
-        onClick={handleItemClick}
-      >
-        <Icon name="tags" color="grey" />
-        Sets
+
+      <Menu.Item as="div" name="sets" active={activeItem === 'sets'}>
+        <Link to="/set-search">
+          <Icon name="tags" color="grey" />
+          Sets
+        </Link>
       </Menu.Item>
     </Menu>
   )

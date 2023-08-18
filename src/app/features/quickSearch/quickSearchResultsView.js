@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+
 import { fetchCards } from './quickSearchResultsSlice'
 
-import { Card, Image, Container, Grid } from 'semantic-ui-react'
+import { Card, Image, Container } from 'semantic-ui-react'
 
 const QuickSearchResultsView = () => {
   const { userSearch } = useSelector((state) => state.quickSearch)
@@ -24,7 +25,7 @@ const QuickSearchResultsView = () => {
         {cards.cards.data &&
           cards.cards.data.map((card) => {
             return (
-              <Card key={card.id}>
+              <Card key={card.id} href={`/card-details/${card.id}`}>
                 {card.card_faces && (
                   <Image
                     src={card.card_faces[0].image_uris.art_crop}
@@ -35,6 +36,7 @@ const QuickSearchResultsView = () => {
                 {card.image_uris && (
                   <Image src={card.image_uris.art_crop} wrapped ui={false} />
                 )}
+
                 <Card.Content>
                   <Card.Header>{card.name}</Card.Header>
                   <Card.Meta>
