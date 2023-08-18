@@ -22,11 +22,12 @@ const Navbar = () => {
 
   return (
     <Menu stackable inverted style={{ borderRadius: '0px' }}>
-      <Menu.Item name="home">
+      <Menu.Item name="home" href="/">
         <Header
           color="grey"
           as="h5"
-          image="https://react.semantic-ui.com/logo.png"
+          image="images/pngegg.png"
+          // image="https://react.semantic-ui.com/logo.png"
           content="MTG Tracker"
         />
       </Menu.Item>
