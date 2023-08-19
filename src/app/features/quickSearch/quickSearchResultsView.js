@@ -5,34 +5,12 @@ import { fetchCards } from './quickSearchResultsSlice'
 
 import { Card, Image, Container, Icon, Button } from 'semantic-ui-react'
 
-const CardContent = (props) => {
-  const { releasedAt, artist, rarity, setName } = props
-  return (
-    <Card.Content style={{ border: 'none', padding: '5px' }}>
-      {/* <Card.Header>{name}</Card.Header> */}
-      <Card.Meta>
-        <Icon name="calendar" color="grey" />
-        <span>{releasedAt}</span>
-      </Card.Meta>
-      <Card.Meta>
-        <Icon name="paint brush" color="grey" />
-        <span>{artist}</span>
-      </Card.Meta>
-      <Card.Meta>
-        <Icon name="fire" color="grey" />
-        <span style={{ textTransform: 'capitalize' }}>{rarity}</span>
-      </Card.Meta>
-      <Card.Meta>
-        <Icon name="box" color="grey" />
-        <span>{setName}</span>
-      </Card.Meta>
-    </Card.Content>
-  )
-}
-
 const QuickSearchResultsView = () => {
   const { userSearch } = useSelector((state) => state.quickSearch)
-  const [showBack, setShowBack] = useState(false)
+  const [cardStyles, setCardStyles] = useState({})
+  const [flippedCards, setFlippedCards] = useState([])
+  const [imageSources, setImageSources] = useState({})
+
   const cards = useSelector((state) => state.cards)
   const dispatch = useDispatch()
 
@@ -41,41 +19,103 @@ const QuickSearchResultsView = () => {
     dispatch(fetchCards(userSearch))
   }, [dispatch, userSearch])
 
-  const handleShowBack = (e) => {
-    e.preventDefault()
-    setShowBack(!showBack)
-  }
   // console.log(cards)
-  console.log(showBack)
+
+  const rarityToBorder = (rarity) => {
+    switch (rarity) {
+      case 'common':
+        return 'grey'
+      case 'uncommon':
+        return 'LightBlue '
+      case 'rare':
+        return 'gold'
+      case 'mythic':
+        return 'orange'
+      default:
+        return 'black'
+    }
+  }
+
+  const handleFlipClick = (event, cardId) => {
+    event.preventDefault()
+    // Clonez l'objet d'état actuel
+    const updatedStyles = { ...cardStyles }
+    const updatedFlippedCards = [...flippedCards]
+
+    // Vérifiez si la carte est déjà "flipped"
+    const isFlipped = updatedFlippedCards.includes(cardId)
+
+    if (isFlipped) {
+      // Si la carte est "flipped", réinitialisez son style
+      delete updatedStyles[cardId]
+      const index = updatedFlippedCards.indexOf(cardId)
+      updatedFlippedCards.splice(index, 1)
+    } else {
+      // Sinon, changez le style de la carte
+      updatedStyles[cardId] = {
+        border: `3px solid ${rarityToBorder(
+          cards.cards.data.find((card) => card.id === cardId).rarity
+        )}`,
+        borderRadius: '10px',
+        height: '90%',
+        transform: 'rotate(180deg)'
+      }
+      updatedFlippedCards.push(cardId)
+    }
+
+    // Mettez à jour l'état local avec les nouveaux styles et cartes "flipped"
+    setCardStyles(updatedStyles)
+    setFlippedCards(updatedFlippedCards)
+  }
+
+  const handleFlipClick2 = (event, cardId) => {
+    event.preventDefault()
+    // Clonez l'objet d'état actuel
+    const updatedSources = { ...imageSources }
+
+    // Vérifiez si la source de l'image est déjà changée
+    const isFlipped = updatedSources[cardId] === 'src2'
+
+    // Changez la source de l'image en fonction de l'état actuel
+    updatedSources[cardId] = isFlipped ? 'src' : 'src2'
+
+    // Mettez à jour l'état local avec la nouvelle source
+    setImageSources(updatedSources)
+  }
 
   return (
     <Container>
       {cards.isLoading && <p>Loading...</p>}
       {cards.error && <p>{cards.error}</p>}
-      <Card.Group style={{ display: 'flex', justifyContent: 'center' }}>
+      <Card.Group
+        style={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
         {/* View for non-flipped Cards */}
         {cards.cards.data &&
           cards.cards.data
             .filter((card) => card.card_faces === undefined)
             .map((card) => {
               return (
-                <Card key={card.id}>
+                <Card
+                  key={card.id}
+                  href={`/card-details/${card.id}`}
+                  style={{
+                    border: `3px solid ${rarityToBorder(card.rarity)}`,
+                    borderRadius: '10px',
+                    height: '90%'
+                  }}
+                >
                   {card.image_uris && (
                     <Image
-                      href={`/card-details/${card.id}`}
                       src={card.image_uris.border_crop}
                       wrapped
                       ui={false}
                       alt={card.name}
                     />
                   )}
-                  <CardContent
-                    name={card.name}
-                    releasedAt={card.released_at}
-                    artist={card.artist}
-                    rarity={card.rarity}
-                    setName={card.set_name}
-                  />
                 </Card>
               )
             })}
@@ -87,7 +127,11 @@ const QuickSearchResultsView = () => {
             .filter((card) => card.card_faces[0].image_uris === undefined)
             .map((card) => {
               return (
-                <Card key={card.id} href={`/card-details/${card.id}`}>
+                <Card
+                  key={card.id}
+                  href={`/card-details/${card.id}`}
+                  style={cardStyles[card.id] || {}}
+                >
                   {card.image_uris && (
                     <Image
                       src={card.image_uris.border_crop}
@@ -96,13 +140,27 @@ const QuickSearchResultsView = () => {
                       alt={card.name}
                     />
                   )}
-                  <CardContent
-                    name={card.name}
-                    releasedAt={card.released_at}
-                    artist={card.artist}
-                    rarity={card.rarity}
-                    setName={card.set_name}
-                  />
+                  <div
+                    style={{
+                      position: 'absolute'
+                    }}
+                  >
+                    <Button
+                      circular
+                      style={{
+                        margin: '3px 0 0 3px',
+                        padding: ' 8px ',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        border: `1px solid ${rarityToBorder(card.rarity)}`
+                      }}
+                      icon
+                      onClick={(e) => handleFlipClick(e, card.id)}
+                    >
+                      <Icon name="redo" size="small" />
+                    </Button>
+                  </div>
                 </Card>
               )
             })}
@@ -114,25 +172,48 @@ const QuickSearchResultsView = () => {
             .filter((card) => card.card_faces[0].image_uris !== undefined)
             .map((card) => {
               return (
-                <Card key={card.id} href={`/card-details/${card.id}`}>
+                <Card
+                  key={card.id}
+                  href={`/card-details/${card.id}`}
+                  style={{
+                    border: `3px solid ${rarityToBorder(card.rarity)}`,
+                    borderRadius: '10px',
+                    height: '90%'
+                  }}
+                >
                   {card.card_faces && (
                     <Image
-                      src={card.card_faces[0].image_uris.border_crop}
+                      src={
+                        imageSources[card.id] === 'src2'
+                          ? card.card_faces[1].image_uris.border_crop
+                          : card.card_faces[0].image_uris.border_crop
+                      }
                       wrapped
                       ui={false}
                       alt={card.name}
                     />
                   )}
-                  <div style={{ margin: '0 auto' }} onClick={handleShowBack}>
-                    <Icon name="retweet" circular />
+                  <div
+                    style={{
+                      position: 'absolute'
+                    }}
+                  >
+                    <Button
+                      circular
+                      style={{
+                        margin: '3px 0 0 3px',
+                        padding: ' 8px ',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        border: `1px solid ${rarityToBorder(card.rarity)}`
+                      }}
+                      icon
+                      onClick={(e) => handleFlipClick2(e, card.id)}
+                    >
+                      <Icon name="redo" size="small" />
+                    </Button>
                   </div>
-                  <CardContent
-                    name={card.name}
-                    releasedAt={card.released_at}
-                    artist={card.artist}
-                    rarity={card.rarity}
-                    setName={card.set_name}
-                  />
                 </Card>
               )
             })}
