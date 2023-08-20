@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { Grid, Image, Segment, Container } from 'semantic-ui-react'
 
-import { fetchCard } from './detailedCardSlice'
+import { fetchCard, fetchRulings } from './detailedCardSlice'
 
 const MyCard = (props) => {
   const {
@@ -45,7 +45,8 @@ const MyCard = (props) => {
     setSearchUri,
     typeLine,
     variation,
-    setType
+    setType,
+    children
   } = props
 
   const legalityEntries = legalities && Object.entries(legalities)
@@ -87,6 +88,7 @@ const MyCard = (props) => {
         <p>Non Foil: {nonfoil ? 'true' : 'false'}</p>
         <p>full_art: {fullArt ? 'true' : 'false'}</p>
         <p>oracle-text: {oracleText ? oracleText : 'No text!'}</p>
+        <div>rulings: {children}</div>
         <p>
           flavorText: {flavorText ? flavorText : 'There is no flavor text!'}
         </p>
@@ -192,17 +194,39 @@ const MyCard = (props) => {
   )
 }
 
+const Rulings = (props) => {
+  const { rulings } = props
+  return (
+    <div>
+      {rulings.data &&
+        rulings.data.map((comment) => {
+          return (
+            <div key={comment.oracle_id}>
+              <p>{comment.comment}</p>
+              <p>{comment.object}</p>
+              <p>{comment.published_at}</p>
+              <p>{comment.source}</p>
+            </div>
+          )
+        })}
+    </div>
+  )
+}
+
 const DetailedCardView = (props) => {
   const { id } = props
 
   const { card } = useSelector((state) => state.card)
+  const rulings = useSelector((state) => state.card.rulings)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchCard(id))
+    dispatch(fetchRulings(id))
   }, [dispatch, id])
 
   console.log(card)
+  // console.log(rulings)
 
   return (
     <Container>
@@ -254,7 +278,9 @@ const DetailedCardView = (props) => {
         typeLine={card.type_line}
         variation={card.variation}
         setType={card.set_type}
-      />
+      >
+        <Rulings rulings={rulings} />
+      </MyCard>
     </Container>
   )
 }

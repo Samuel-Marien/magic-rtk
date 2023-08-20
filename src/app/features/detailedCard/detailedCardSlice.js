@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isLoading: false,
   card: {},
+  rulings: [],
   error: ''
 }
 
@@ -12,12 +13,23 @@ export const fetchCard = createAsyncThunk('card/fetchCard', async (id) => {
   return response.data
 })
 
+export const fetchRulings = createAsyncThunk(
+  'card/fetchRulings',
+  async (id) => {
+    const response = await axios.get(
+      `https://api.scryfall.com/cards/${id}/rulings`
+    )
+    // console.log(response.data)
+    return response.data
+  }
+)
+
 const cardSlice = createSlice({
   name: 'card',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCard.pending, (state, action) => {
+    builder.addCase(fetchCard.pending, (state) => {
       state.isLoading = true
     })
     builder.addCase(fetchCard.fulfilled, (state, action) => {
@@ -30,7 +42,20 @@ const cardSlice = createSlice({
       state.card = {}
       state.error = action.payload
     })
+    // rulings
+    builder.addCase(fetchRulings.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(fetchRulings.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.rulings = action.payload
+    })
+    builder.addCase(fetchRulings.rejected, (state, action) => {
+      state.isLoading = false
+      state.rulings = []
+      state.error = action.payload
+    })
   }
 })
-
+// console.log(initialState)
 export default cardSlice.reducer
