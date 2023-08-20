@@ -26,7 +26,7 @@ const Navbar = () => {
         <Header
           color="grey"
           as="h5"
-          image="images/pngegg.png"
+          image="/images/pngegg.png"
           // image="https://react.semantic-ui.com/logo.png"
           content="MTG Tracker"
         />

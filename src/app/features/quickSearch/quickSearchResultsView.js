@@ -7,6 +7,7 @@ import { Card, Image, Container, Icon, Button } from 'semantic-ui-react'
 
 const QuickSearchResultsView = () => {
   const { userSearch } = useSelector((state) => state.quickSearch)
+
   const [cardStyles, setCardStyles] = useState({})
   const [flippedCards, setFlippedCards] = useState([])
   const [imageSources, setImageSources] = useState({})

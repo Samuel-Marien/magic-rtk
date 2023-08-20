@@ -4,11 +4,11 @@ import QuickSearchResultsView from '../app/features/quickSearch/QuickSearchResul
 
 function Home() {
   return (
-    <div>
+    <>
       <Navbar />
       <QuickSearchView />
       <QuickSearchResultsView />
-    </div>
+    </>
   )
 }
 
