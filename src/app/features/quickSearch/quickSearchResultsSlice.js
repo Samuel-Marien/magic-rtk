@@ -12,7 +12,7 @@ export const fetchCards = createAsyncThunk(
   'cards/fetchCards',
   async (userSearch) => {
     const response = await axios.get(
-      `https://api.scryfall.com/cards/search?order=cmc&q=${userSearch}`
+      `https://api.scryfall.com/cards/search?order=cmc&q=${userSearch}&unique=prints`
     )
     return response.data
   }

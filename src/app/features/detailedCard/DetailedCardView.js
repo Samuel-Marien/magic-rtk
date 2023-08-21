@@ -93,32 +93,35 @@ const MyCard = (props) => {
           flavorText: {flavorText ? flavorText : 'There is no flavor text!'}
         </p>
         <div style={{ display: 'flex' }}>
+          Games :
           {games &&
             games.map((item, index) => {
               return (
                 <p key={index}>
-                  Games : <span> - {item} - </span>
+                  <span> - {item} - </span>
                 </p>
               )
             })}
         </div>
         <div style={{ display: 'flex' }}>
+          Keywords :
           {keywords &&
             keywords.map((item, index) => {
               return (
                 <p key={index}>
-                  Keywords : <span> - {item} - </span>
+                  <span> - {item} - </span>
                 </p>
               )
             })}
         </div>
         <p>arena-id: {arenaId ? arenaId : 'not available on Arena'}</p>
         <div style={{ display: 'flex' }}>
+          multiverse-ids :
           {multiverseIds &&
             multiverseIds.map((item, index) => {
               return (
                 <p key={index}>
-                  multiverse-ids : <span> - {item} - </span>
+                  <span> - {item} - </span>
                 </p>
               )
             })}
@@ -126,11 +129,12 @@ const MyCard = (props) => {
         <p>mtgo-id: {mtgoId ? mtgoId : 'not allowed online'}</p>
         <p>frame: {frame}</p>
         <div style={{ display: 'flex' }}>
+          frame-effects :
           {frameEffects &&
             frameEffects.map((item, index) => {
               return (
                 <p key={index}>
-                  frame-effects : <span> - {item} - </span>
+                  <span> - {item} - </span>
                 </p>
               )
             })}
@@ -199,9 +203,9 @@ const Rulings = (props) => {
   return (
     <div>
       {rulings.data &&
-        rulings.data.map((comment) => {
+        rulings.data.map((comment, index) => {
           return (
-            <div key={comment.oracle_id}>
+            <div key={index}>
               <p>{comment.comment}</p>
               <p>{comment.object}</p>
               <p>{comment.published_at}</p>
@@ -226,7 +230,6 @@ const DetailedCardView = (props) => {
   }, [dispatch, id])
 
   console.log(card)
-  // console.log(rulings)
 
   return (
     <Container>

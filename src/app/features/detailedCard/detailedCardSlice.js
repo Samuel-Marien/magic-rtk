@@ -19,7 +19,6 @@ export const fetchRulings = createAsyncThunk(
     const response = await axios.get(
       `https://api.scryfall.com/cards/${id}/rulings`
     )
-    // console.log(response.data)
     return response.data
   }
 )
