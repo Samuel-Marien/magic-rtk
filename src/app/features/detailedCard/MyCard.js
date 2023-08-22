@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { charToSvg } from '../../../common/charToSvg'
 
 import {
   Grid,
@@ -13,6 +15,13 @@ import {
 } from 'semantic-ui-react'
 
 const MyCard = (props) => {
+  const [svg, setSvg] = useState('')
+
+  const [legalityEntries, setLegalityEntries] = useState('')
+  const [pricesEntries, setPricesEntries] = useState('')
+  const [purchaseUrisEntries, setPurchaseUrisEntries] = useState('')
+  const [relatedUrisEntries, setRelatedUrisEntries] = useState('')
+
   const {
     imgSrc,
     name,
@@ -128,10 +137,28 @@ const MyCard = (props) => {
     }
   }
 
-  const legalityEntries = legalities && Object.entries(legalities)
-  const pricesEntries = prices && Object.entries(prices)
-  const purchaseUrisEntries = purchaseUris && Object.entries(purchaseUris)
-  const relatedUrisEntries = relatedUris && Object.entries(relatedUris)
+  const rarityToColor = (rarity) => {
+    switch (rarity) {
+      case 'common':
+        return 'grey'
+      case 'uncommon':
+        return 'teal '
+      case 'rare':
+        return 'yellow'
+      case 'mythic':
+        return 'brown'
+      default:
+        return 'black'
+    }
+  }
+
+  useEffect(() => {
+    setLegalityEntries(legalities && Object.entries(legalities))
+    setPricesEntries(prices && Object.entries(prices))
+    setPurchaseUrisEntries(purchaseUris && Object.entries(purchaseUris))
+    setRelatedUrisEntries(relatedUris && Object.entries(relatedUris))
+    setSvg(charToSvg(manaCost))
+  }, [manaCost, legalities, prices, purchaseUris, relatedUris])
 
   return (
     <Grid stackable columns="equal">
@@ -193,13 +220,56 @@ const MyCard = (props) => {
       <Grid.Column width={8}>
         <Segment style={{ background: 'rgba(255, 255, 255, 0.85)' }}>
           <Header as="h1" dividing>
-            {name}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              {name}
+              <p style={{ display: 'flex' }}>
+                {svg &&
+                  svg.map((item, index) => {
+                    return (
+                      <Image
+                        style={{
+                          height: '25px',
+                          width: '25px',
+                          margin: '0 5px 0 0'
+                        }}
+                        key={index}
+                        src={item}
+                      />
+                    )
+                  })}
+              </p>
+            </div>
           </Header>
-          <p style={{ display: 'flex' }}>{manaCost}</p>
-          <p>
-            <Icon name="id card" color="grey" />
-            {typeLine}
-            <span> {rarity}</span>
+
+          <p
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <span>
+              <Icon name="id card" color="grey" />
+              {typeLine}
+            </span>
+            <span
+              style={{
+                textTransform: 'capitalize',
+                border: `1px solid ${rarityToColor(rarity)}`,
+                boxShadow: `0px 0 3px ${rarityToColor(rarity)}`,
+                borderRadius: '5px',
+                padding: '2px'
+              }}
+            >
+              <Icon name="star" color={rarityToColor(rarity)} />
+              {rarity}
+            </span>
           </p>
 
           <p>
@@ -217,7 +287,21 @@ const MyCard = (props) => {
             <Icon name="grab" color="grey" />
             {power ? power : '*'}/{toughness ? toughness : '*'}
           </p>
-
+          <Divider />
+          <p>
+            <Icon name="magic" color="grey" />
+            {frameDef(frame)}
+          </p>
+          {frameEffects && (
+            <div>
+              <Icon name="magic" color="grey" />
+              Frame-effects :
+              {frameEffects &&
+                frameEffects.map((item, index) => {
+                  return <span key={index}>{frameEffetsDef(item)}. </span>
+                })}
+            </div>
+          )}
           <Divider />
           <Grid stackable>
             <Grid.Column width={8}>
@@ -435,22 +519,6 @@ const MyCard = (props) => {
           </Item.Description>
           <Divider />
           <Item.Description>{children}</Item.Description>
-
-          <Divider />
-          <p>
-            <Icon name="magic" color="grey" />
-            {frameDef(frame)}
-          </p>
-          {frameEffects && (
-            <div>
-              <Icon name="magic" color="grey" />
-              Frame-effects :
-              {frameEffects &&
-                frameEffects.map((item, index) => {
-                  return <span key={index}>{frameEffetsDef(item)}. </span>
-                })}
-            </div>
-          )}
         </Segment>
       </Grid.Column>
       <Grid.Column>
@@ -495,14 +563,6 @@ const MyCard = (props) => {
                 legalityEntries &&
                 legalityEntries.map(([format, legality]) => (
                   <List.Item key={format}>
-                    <strong
-                      style={{
-                        textTransform: 'capitalize',
-                        marginRight: '3px'
-                      }}
-                    >
-                      {format && format}:
-                    </strong>
                     <span>
                       {legality === 'not_legal' && (
                         <Icon
@@ -519,6 +579,14 @@ const MyCard = (props) => {
                         />
                       )}
                     </span>
+                    <strong
+                      style={{
+                        textTransform: 'capitalize',
+                        marginRight: '3px'
+                      }}
+                    >
+                      {format && format}
+                    </strong>
                   </List.Item>
                 ))}
             </List>
