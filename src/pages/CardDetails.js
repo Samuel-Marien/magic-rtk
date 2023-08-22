@@ -9,9 +9,18 @@ const CardDetails = () => {
   let { id } = useParams()
 
   return (
-    <div>
+    <div
+      style={{
+        height: '800px',
+        backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 1) 100%), url('../images/bg2.jpg')`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       <Navbar />
-      <DetailedCardView id={id} />
+      <div style={{ marginTop: '60px' }}>
+        <DetailedCardView id={id} />
+      </div>
     </div>
   )
 }

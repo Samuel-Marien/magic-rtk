@@ -41,14 +41,14 @@ const Navbar = () => {
 
       <Menu.Item as="div" name="cards" active={activeItem === 'cards'}>
         <Link to="/card-search">
-          <Icon name="tag" color="grey" />
+          <Icon name="id badge" color="grey" />
           Cards
         </Link>
       </Menu.Item>
 
       <Menu.Item as="div" name="sets" active={activeItem === 'sets'}>
         <Link to="/set-search">
-          <Icon name="tags" color="grey" />
+          <Icon name="box" color="grey" />
           Sets
         </Link>
       </Menu.Item>

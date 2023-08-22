@@ -23,15 +23,30 @@ const QuickSearchView = () => {
 
   return (
     <Container textAlign="center">
+      <Header as="h1" style={{ margin: '50px 0 0 0', color: 'white' }}>
+        Do a quick search by name's card for quick first results.
+      </Header>
+      <Header
+        as="h4"
+        style={{
+          margin: '5px 0 30px 0 ',
+          color: 'white',
+          fontStyle: 'italic',
+          fontWeight: 'normal'
+        }}
+      >
+        Or go to the cards section to add more options to your search.
+      </Header>
       <Input
         action
         type="text"
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
-        placeholder="Search for card..."
+        placeholder="ex: thal, nezu, elesh etc..."
       >
         <input />
         <Button
+          color="teal"
           type="submit"
           onClick={() => dispatch(setUserSearch(userInput))}
         >
