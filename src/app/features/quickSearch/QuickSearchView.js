@@ -3,10 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { setUserSearch } from './quickSearchSlice'
 
-import { Input } from 'semantic-ui-react'
-import { Button } from 'semantic-ui-react'
-import { Container } from 'semantic-ui-react'
-import { Header } from 'semantic-ui-react'
+import { Input, Button, Container, Header } from 'semantic-ui-react'
 
 const QuickSearchView = () => {
   const [userInput, setUserInput] = useState('')

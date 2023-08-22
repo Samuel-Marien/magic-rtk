@@ -9,7 +9,7 @@ function Home() {
         height: '800px',
         backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, 
         rgba(255, 255, 255, 1) 100%), 
-        url('../images/bg6.jpg')`,
+        url('../images/bg12.jpg')`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center top'

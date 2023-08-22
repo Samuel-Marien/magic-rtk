@@ -23,6 +23,7 @@ const MyCard = (props) => {
   const [relatedUrisEntries, setRelatedUrisEntries] = useState('')
 
   const {
+    onClick,
     imgSrc,
     name,
     rarity,
@@ -142,7 +143,7 @@ const MyCard = (props) => {
       case 'common':
         return 'grey'
       case 'uncommon':
-        return 'teal '
+        return 'teal'
       case 'rare':
         return 'yellow'
       case 'mythic':
@@ -160,6 +161,8 @@ const MyCard = (props) => {
     setSvg(charToSvg(manaCost))
   }, [manaCost, legalities, prices, purchaseUris, relatedUris])
 
+  // console.log(layout)
+
   return (
     <Grid stackable columns="equal">
       <Grid.Column>
@@ -167,9 +170,36 @@ const MyCard = (props) => {
           src={imgSrc}
           style={{ borderRadius: '17px', boxShadow: '0px 0 7px black' }}
         />
-        <Item.Description style={{ margin: '7px 0 7px 0' }}>
-          <Icon name="paint brush" color="black" />{' '}
-          <span style={{ fontWeight: 'bolder' }}>{artist}</span>
+        <Item.Description
+          style={{
+            margin: '7px 0 7px 0',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <span>
+            <Icon name="paint brush" color="black" />{' '}
+            <span style={{ fontWeight: 'bolder' }}>{artist}</span>
+          </span>
+          {layout === 'transform' && (
+            <Button
+              circular
+              style={{
+                margin: '3px 0 0 3px',
+                padding: ' 8px ',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                border: '1px solid teal',
+                boxShadow: '0px 0 3px teal'
+              }}
+              icon
+              onClick={onClick}
+            >
+              <Icon name="redo" size="small" />
+            </Button>
+          )}
         </Item.Description>
         <Segment style={{ background: 'rgba(255, 255, 255, 0.85)' }}>
           <div>
@@ -234,9 +264,9 @@ const MyCard = (props) => {
                     return (
                       <Image
                         style={{
-                          height: '25px',
-                          width: '25px',
-                          margin: '0 5px 0 0'
+                          height: '20px',
+                          width: '20px',
+                          margin: '0 2px 0 0'
                         }}
                         key={index}
                         src={item}

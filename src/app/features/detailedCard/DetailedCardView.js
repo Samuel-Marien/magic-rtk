@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Container } from 'semantic-ui-react'
+import { Container, Button, Icon } from 'semantic-ui-react'
 
 import { fetchCard, fetchRulings } from './detailedCardSlice'
 
@@ -10,6 +10,7 @@ import Rulings from './Rulings'
 
 const DetailedCardView = (props) => {
   const { id } = props
+  const [flipCard, setFlipCard] = useState(true)
 
   const { card } = useSelector((state) => state.card)
   const rulings = useSelector((state) => state.card.rulings)
@@ -21,30 +22,95 @@ const DetailedCardView = (props) => {
   }, [dispatch, id])
 
   console.log(card)
-  // console.log(rulings)
+  console.log(card.layout)
+  console.log(flipCard)
 
   return (
     <Container>
       {card.isLoading && <p>Loading...</p>}
       {card.error && <p>{card.error}</p>}
+
       <MyCard
+        onClick={() => setFlipCard(!flipCard)}
         imgSrc={
-          card.image_uris
+          card.layout === 'normal'
             ? card.image_uris.large
-            : card.card_faces
+            : card.layout === 'transform' && flipCard
             ? card.card_faces[0].image_uris.large
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].image_uris.large
             : null
         }
-        name={card.name}
+        name={
+          card.layout === 'normal'
+            ? card.name
+            : card.layout === 'transform' && flipCard
+            ? card.card_faces[0].name
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].name
+            : null
+        }
+        typeLine={
+          card.layout === 'normal'
+            ? card.type_line
+            : card.layout === 'transform' && flipCard
+            ? card.card_faces[0].type_line
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].type_line
+            : null
+        }
+        power={
+          card.layout === 'normal'
+            ? card.power
+            : card.layout === 'transform' && flipCard
+            ? card.card_faces[0].power
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].power
+            : null
+        }
+        toughness={
+          card.layout === 'normal'
+            ? card.toughness
+            : card.layout === 'transform' && flipCard
+            ? card.card_faces[0].toughness
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].toughness
+            : null
+        }
+        manaCost={
+          card.layout === 'normal'
+            ? card.manaCost
+            : card.layout === 'transform' && flipCard
+            ? card.card_faces[0].mana_cost
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].mana_cost
+            : null
+        }
+        oracleText={
+          card.layout === 'normal'
+            ? card.oracle_text
+            : card.layout === 'transform' && flipCard
+            ? card.card_faces[0].oracle_text
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].oracle_text
+            : null
+        }
+        artist={
+          card.layout === 'normal'
+            ? card.artist
+            : card.layout === 'transform' && flipCard
+            ? card.card_faces[0].artist
+            : card.layout === 'transform' && !flipCard
+            ? card.card_faces[1].artist
+            : null
+        }
         rarity={card.rarity}
-        artist={card.artist}
         collectorNumber={card.collector_number}
         isDigital={card.digital}
         flavorText={card.flavor_text}
         foil={card.foil}
         games={card.games}
         keywords={card.keywords}
-        manaCost={card.mana_cost}
         mtgoId={card.mtgo_id}
         multiverseIds={card.multiverse_ids}
         nonfoil={card.nonfoil}
@@ -56,11 +122,8 @@ const DetailedCardView = (props) => {
         fullArt={card.full_art}
         layout={card.layout}
         legalities={card.legalities}
-        oracleText={card.oracle_text}
         pennyRank={card.penny_rank}
         prices={card.prices}
-        power={card.power}
-        toughness={card.toughness}
         promo={card.promo}
         purchaseUris={card.purchase_uris}
         relatedUris={card.related_uris}
@@ -70,7 +133,6 @@ const DetailedCardView = (props) => {
         setName={card.set_name}
         set={card.set}
         setSearchUri={card.set_search_uri}
-        typeLine={card.type_line}
         variation={card.variation}
         setType={card.set_type}
       >
