@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Container, Button, Icon } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 
 import { fetchCard, fetchRulings } from './detailedCardSlice'
 

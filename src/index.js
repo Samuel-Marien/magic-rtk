@@ -11,6 +11,7 @@ import Home from './pages/Home'
 import CardDetails from './pages/CardDetails'
 import CardSearch from './pages/CardSearch'
 import SetSearch from './pages/SetSearch'
+import SetDetails from './pages/SetDetails'
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: '/card-details/:id',
     element: <CardDetails />
+  },
+  {
+    path: '/set-details/:code',
+    element: <SetDetails />
   }
 ])
 
