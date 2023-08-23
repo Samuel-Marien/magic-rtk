@@ -4,6 +4,7 @@ import cardsReducer from './features/quickSearch/quickSearchResultsSlice'
 import cardReducer from './features/detailedCard/detailedCardSlice'
 import setSearchReducer from './features/setsSearch/setsSearchSlice'
 import setsReducer from './features/setsSearch/setsSearchResultSlice'
+import detailedSetReducer from './features/detailedSet/detailedSetSlice'
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     cards: cardsReducer,
     card: cardReducer,
     setSetsUserSearch: setSearchReducer,
-    sets: setsReducer
+    sets: setsReducer,
+    cardsSet: detailedSetReducer
   }
 })
 

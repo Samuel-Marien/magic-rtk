@@ -7,6 +7,7 @@ import { fetchCard, fetchRulings } from './detailedCardSlice'
 
 import MyCard from './MyCard'
 import Rulings from './Rulings'
+import Loaders from '../../../components/Loaders'
 
 const DetailedCardView = (props) => {
   const { id } = props
@@ -27,7 +28,7 @@ const DetailedCardView = (props) => {
 
   return (
     <Container>
-      {card.isLoading && <p>Loading...</p>}
+      {card.isLoading && <Loaders />}
       {card.error && <p>{card.error}</p>}
 
       <MyCard

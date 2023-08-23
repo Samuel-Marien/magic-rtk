@@ -1,16 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { setSetsUserSearch } from './setsSearchSlice'
-import { Input, Button, Container, Header } from 'semantic-ui-react'
+import { Input, Container, Header } from 'semantic-ui-react'
 
 const SetsSearchView = () => {
   const [userInput, setUserInput] = useState('')
 
-  const { setUserSearch } = useSelector((state) => state.setSetsUserSearch)
+  const allSetsNames = useSelector((state) => state.sets.allSetsNames)
   const dispatch = useDispatch()
 
-  console.log(setUserSearch)
+  useEffect(() => {
+    // Fonction de filtrage des noms de sets
+    const filterSets = () => {
+      const searchTerm = userInput.toLowerCase().trim()
+      if (searchTerm) {
+        return allSetsNames.filter((setName) =>
+          setName.toLowerCase().includes(searchTerm)
+        )
+      } else {
+        return allSetsNames
+      }
+    }
+    dispatch(setSetsUserSearch(filterSets()))
+  }, [userInput, allSetsNames])
+
+  // console.log(userInput)
+  // console.log(allSetsNames)
 
   return (
     <Container textAlign="center">
@@ -25,16 +41,9 @@ const SetsSearchView = () => {
         type="text"
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
-        placeholder="type a set name..."
+        placeholder="type a set name"
       >
         <input />
-        <Button
-          color="teal"
-          type="submit"
-          onClick={() => dispatch(setSetsUserSearch(userInput))}
-        >
-          Search
-        </Button>
       </Input>
     </Container>
   )

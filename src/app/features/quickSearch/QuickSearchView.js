@@ -13,7 +13,7 @@ const QuickSearchView = () => {
   const cards = useSelector((state) => state.cards)
   const dispatch = useDispatch()
 
-  console.log(cards)
+  // console.log(cards)
   // console.log(totalCards)
   // console.log('userInput', userInput)
   // console.log('userSearch', userSearch)

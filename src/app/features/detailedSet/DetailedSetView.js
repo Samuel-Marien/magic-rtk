@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { fetchCards } from './quickSearchResultsSlice'
-
 import { Card, Image, Container, Icon, Button } from 'semantic-ui-react'
+
+import { fetchCards } from './detailedSetSlice'
 
 import Loaders from '../../../components/Loaders'
 
-const QuickSearchResultsView = () => {
-  const { userSearch } = useSelector((state) => state.quickSearch)
+const DetailedSetView = (props) => {
+  const { code } = props
+  const { cards } = useSelector((state) => state.cardsSet)
+  const dispatch = useDispatch()
 
   const [cardStyles, setCardStyles] = useState({})
   const [flippedCards, setFlippedCards] = useState([])
   const [imageSources, setImageSources] = useState({})
 
-  const cards = useSelector((state) => state.cards)
-  const dispatch = useDispatch()
-
   useEffect(() => {
-    if (userSearch === '') return
-    dispatch(fetchCards(userSearch))
-  }, [dispatch, userSearch])
+    dispatch(fetchCards(code))
+  }, [dispatch, code])
 
-  // console.log(cards)
+  console.log(cards)
 
   const rarityToBorder = (rarity) => {
     switch (rarity) {
@@ -97,8 +95,8 @@ const QuickSearchResultsView = () => {
         }}
       >
         {/* View for non-flipped Cards */}
-        {cards.cards.data &&
-          cards.cards.data
+        {cards.data &&
+          cards.data
             .filter((card) => card.card_faces === undefined)
             .map((card) => {
               return (
@@ -124,8 +122,8 @@ const QuickSearchResultsView = () => {
             })}
 
         {/* View for flipped Cards without double view*/}
-        {cards.cards.data &&
-          cards.cards.data
+        {cards.data &&
+          cards.data
             .filter((card) => card.card_faces !== undefined)
             .filter((card) => card.card_faces[0].image_uris === undefined)
             .map((card) => {
@@ -167,10 +165,9 @@ const QuickSearchResultsView = () => {
                 </Card>
               )
             })}
-
         {/* View for flipped Cards with double view */}
-        {cards.cards.data &&
-          cards.cards.data
+        {cards.data &&
+          cards.data
             .filter((card) => card.card_faces !== undefined)
             .filter((card) => card.card_faces[0].image_uris !== undefined)
             .map((card) => {
@@ -225,4 +222,4 @@ const QuickSearchResultsView = () => {
   )
 }
 
-export default QuickSearchResultsView
+export default DetailedSetView

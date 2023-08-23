@@ -5,11 +5,13 @@ const initialState = {
   isLoading: false,
   sets: [],
   totalSets: 0,
+  allSetsNames: [],
   error: ''
 }
 
 export const fetchAllSets = createAsyncThunk('sets/fetchSets', async () => {
   const response = await axios.get(`https://api.scryfall.com/sets`)
+
   return response.data
 })
 
@@ -26,6 +28,7 @@ const setsSlice = createSlice({
       state.isLoading = false
       state.sets = action.payload
       state.totalSets = action.payload.data.length
+      state.allSetsNames = action.payload.data.map((set) => set.name)
       state.error = ''
     })
     builder.addCase(fetchAllSets.rejected, (state, action) => {

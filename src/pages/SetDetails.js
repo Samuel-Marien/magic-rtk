@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import Navbar from '../components/Navbar'
+import DetailedSetView from '../app/features/detailedSet/DetailedSetView'
 
 const SetDetails = () => {
   let { code } = useParams()
@@ -16,7 +17,7 @@ const SetDetails = () => {
       }}
     >
       <Navbar />
-      <div style={{ marginTop: '60px' }}>SetDetail for: {code}</div>
+      <DetailedSetView code={code} />
     </div>
   )
 }
