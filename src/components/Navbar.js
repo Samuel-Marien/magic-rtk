@@ -24,31 +24,30 @@ const Navbar = () => {
     <Menu stackable inverted style={{ borderRadius: '0px' }}>
       <Menu.Item name="home" href="/">
         <Header
-          color="grey"
+          color="teal"
           as="h5"
           image="/images/pngegg.png"
-          // image="https://react.semantic-ui.com/logo.png"
           content="MTG Tracker"
         />
       </Menu.Item>
 
       <Menu.Item as="div" href="/" name="home" active={activeItem === 'home'}>
         <Link to="/">
-          <Icon name="home" color="grey" />
+          <Icon name="home" color="teal" />
           Home
         </Link>
       </Menu.Item>
 
       <Menu.Item as="div" name="cards" active={activeItem === 'cards'}>
         <Link to="/card-search">
-          <Icon name="id badge" color="grey" />
+          <Icon name="id badge" color="teal" />
           Cards
         </Link>
       </Menu.Item>
 
       <Menu.Item as="div" name="sets" active={activeItem === 'sets'}>
         <Link to="/set-search">
-          <Icon name="box" color="grey" />
+          <Icon name="box" color="teal" />
           Sets
         </Link>
       </Menu.Item>

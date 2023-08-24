@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isLoading: false,
   cards: [],
+  setName: '',
   error: ''
 }
 
@@ -26,6 +27,7 @@ const cardsSetSlice = createSlice({
     builder.addCase(fetchCards.fulfilled, (state, action) => {
       state.isLoading = false
       state.cards = action.payload
+      state.setName = action.payload.data[0].set_name
       state.error = ''
     })
     builder.addCase(fetchCards.rejected, (state, action) => {

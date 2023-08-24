@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Card, Image, Container, Icon, Button } from 'semantic-ui-react'
+import { Card, Image, Container, Icon, Button, Header } from 'semantic-ui-react'
 
 import { fetchCards } from './detailedSetSlice'
 
@@ -10,6 +10,7 @@ import Loaders from '../../../components/Loaders'
 const DetailedSetView = (props) => {
   const { code } = props
   const { cards } = useSelector((state) => state.cardsSet)
+  const setName = useSelector((state) => state.cardsSet.setName)
   const dispatch = useDispatch()
 
   const [cardStyles, setCardStyles] = useState({})
@@ -21,6 +22,7 @@ const DetailedSetView = (props) => {
   }, [dispatch, code])
 
   console.log(cards)
+  console.log(setName)
 
   const rarityToBorder = (rarity) => {
     switch (rarity) {
@@ -86,12 +88,15 @@ const DetailedSetView = (props) => {
 
   return (
     <Container>
+      <Header as="h1" color="teal">
+        {setName}
+      </Header>
       {cards.isLoading && <Loaders />}
       {cards.error && <p>{cards.error}</p>}
       <Card.Group
         style={{
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'space-between'
         }}
       >
         {/* View for non-flipped Cards */}

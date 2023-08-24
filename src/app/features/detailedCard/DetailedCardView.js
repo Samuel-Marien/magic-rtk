@@ -22,9 +22,9 @@ const DetailedCardView = (props) => {
     dispatch(fetchRulings(id))
   }, [dispatch, id])
 
-  console.log(card)
-  console.log(card.layout)
-  console.log(flipCard)
+  // console.log(card)
+  // console.log(card.layout)
+  // console.log(flipCard)
 
   return (
     <Container>

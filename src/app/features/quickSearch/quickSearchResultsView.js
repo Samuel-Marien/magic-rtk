@@ -87,13 +87,13 @@ const QuickSearchResultsView = () => {
   }
 
   return (
-    <Container>
+    <>
       {cards.isLoading && <Loaders />}
       {cards.error && <p>{cards.error}</p>}
       <Card.Group
         style={{
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'space-between'
         }}
       >
         {/* View for non-flipped Cards */}
@@ -221,7 +221,7 @@ const QuickSearchResultsView = () => {
               )
             })}
       </Card.Group>
-    </Container>
+    </>
   )
 }
 

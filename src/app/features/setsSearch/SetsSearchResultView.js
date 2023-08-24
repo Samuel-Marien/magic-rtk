@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Card, Image, Container, Icon } from 'semantic-ui-react'
+import { Card, Image, Icon, Container } from 'semantic-ui-react'
 
 import { fetchAllSets } from './setsSearchResultSlice'
 
@@ -20,13 +20,13 @@ const SetsSearchResultView = () => {
   // console.log(setUserSearch)
 
   return (
-    <Container>
+    <div>
       {sets.isLoading && <Loaders />}
       {sets.error && <p>{sets.error}</p>}
       <Card.Group
         style={{
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'space-between'
         }}
       >
         {sets.sets.data &&
@@ -62,7 +62,7 @@ const SetsSearchResultView = () => {
               )
             })}
       </Card.Group>
-    </Container>
+    </div>
   )
 }
 

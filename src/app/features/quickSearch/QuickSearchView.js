@@ -19,47 +19,87 @@ const QuickSearchView = () => {
   // console.log('userSearch', userSearch)
 
   return (
-    <Container textAlign="center">
-      <Header as="h1" style={{ margin: '50px 0 0 0', color: 'white' }}>
+    <>
+      <Header
+        as="h1"
+        style={{
+          margin: '50px 0 0 0',
+          color: 'white',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
         Do a quick search by name's card for quick first results.
       </Header>
       <Header
         as="h4"
         style={{
-          margin: '5px 0 30px 0 ',
+          margin: '5px 0 15px 0 ',
           color: 'white',
           fontStyle: 'italic',
-          fontWeight: 'normal'
+          fontWeight: 'normal',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
         Or go to the cards section to add more options to your search.
       </Header>
-      <Input
-        action
-        type="text"
-        value={userInput}
-        onChange={(e) => setUserInput(e.target.value)}
-        placeholder="ex: thal, nezu, elesh etc..."
+      <div
+        style={{
+          margin: '5px 0 15px 0 ',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
       >
-        <input />
-        <Button
-          color="teal"
-          type="submit"
-          onClick={() => dispatch(setUserSearch(userInput))}
-        >
-          Search
-        </Button>
-      </Input>
-      {totalCards > 0 && (
-        <Header as="h4" style={{ margin: '10px 0 10px 0' }}>
-          Your search:{' '}
-          <span style={{ textTransform: 'capitalize', color: 'grey' }}>
-            {userSearch}
-          </span>{' '}
-          - Matchs: <span style={{ color: 'grey' }}>{totalCards}</span> Cards
-        </Header>
-      )}
-    </Container>
+        <div style={{ marginRight: '1rem' }}>
+          <Input
+            size="mini"
+            action
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="ex: thal, nezu, elesh etc..."
+          >
+            <input />
+            <Button
+              color="teal"
+              type="submit"
+              onClick={() => dispatch(setUserSearch(userInput))}
+            >
+              Search
+            </Button>
+          </Input>
+        </div>
+
+        {totalCards > 0 && (
+          <Header
+            as="h4"
+            style={{
+              margin: '0',
+              color: 'teal',
+              padding: '5px 10px 5px 10px',
+              borderRadius: '6px',
+              backgroundColor: 'white'
+            }}
+          >
+            <span style={{}}>
+              Matchs with {totalCards} results found with{' '}
+              <span
+                style={{
+                  textTransform: 'uppercase'
+                }}
+              >
+                {userSearch}{' '}
+              </span>
+              as search
+            </span>
+          </Header>
+        )}
+      </div>
+    </>
   )
 }
 
