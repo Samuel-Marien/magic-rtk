@@ -136,6 +136,7 @@ const DetailedCardView = (props) => {
         setSearchUri={card.set_search_uri}
         variation={card.variation}
         setType={card.set_type}
+        setCode={card.set}
       >
         <Rulings rulings={rulings} />
       </MyCard>

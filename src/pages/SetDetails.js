@@ -1,6 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
+import { Container } from 'semantic-ui-react'
+
 import Navbar from '../components/Navbar'
 import DetailedSetView from '../app/features/detailedSet/DetailedSetView'
 
@@ -9,15 +11,17 @@ const SetDetails = () => {
   return (
     <div
       style={{
-        height: '800px',
-        backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 1) 100%), url('../images/bg13.png')`,
+        height: '1200px',
+        backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 1) 100%), url('../images/bg15.jpg')`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center top'
       }}
     >
       <Navbar />
-      <DetailedSetView code={code} />
+      <Container fluid style={{ padding: '0 5% 0 5%' }}>
+        <DetailedSetView code={code} />
+      </Container>
     </div>
   )
 }

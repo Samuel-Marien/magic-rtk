@@ -21,7 +21,11 @@ const Navbar = () => {
   }, [test])
 
   return (
-    <Menu stackable inverted style={{ borderRadius: '0px' }}>
+    <Menu
+      stackable
+      inverted
+      style={{ borderRadius: '0px', marginBottom: '0px' }}
+    >
       <Menu.Item name="home" href="/">
         <Header
           color="teal"

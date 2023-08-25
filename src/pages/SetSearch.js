@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-import { Card, Image, Icon, Container } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 
 import Navbar from '../components/Navbar'
 import SetsSearchView from '../app/features/setsSearch/SetsSearchView'

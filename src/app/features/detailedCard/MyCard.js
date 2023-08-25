@@ -57,6 +57,7 @@ const MyCard = (props) => {
     releasedAt,
     reprint,
     reserved,
+    setCode,
     setName,
     set,
     setSearchUri,
@@ -304,7 +305,7 @@ const MyCard = (props) => {
 
           <p>
             <Icon name="box" color="grey" />
-            <a href={setSearchUri}>
+            <a href={`/set-details/${setCode}`}>
               {setName} [{set}-{setType}]
             </a>
           </p>
