@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { setSetsUserSearch } from './setsSearchSlice'
-import { Input, Header, Container } from 'semantic-ui-react'
+import { Input, Header } from 'semantic-ui-react'
 
 const SetsSearchView = () => {
   const [userInput, setUserInput] = useState('')
