@@ -2,30 +2,37 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Form, Field } from 'react-final-form'
+import {
+  Dropdown,
+  Input,
+  Header,
+  Segment,
+  Button,
+  Radio,
+  Checkbox,
+  Form as SemanticForm
+} from 'semantic-ui-react'
 
 import {
   fetchAdvancedCards,
   setAdvancedSearchParams
 } from './advancedCardsSearchSlice'
-import AdvancedResult from './AdvancedResults'
 
 import {
-  Input,
-  Header,
-  Container,
-  Segment,
-  Card,
-  Image,
-  Icon,
-  Button
-} from 'semantic-ui-react'
+  colorsOptions,
+  rarityOptions,
+  orderOptions,
+  uniqueOptions
+} from './utils/dropdownOptions'
+
+import AdvancedResult from './AdvancedResults'
 
 import Loaders from '../../../components/Loaders'
 
 const AdvancedCardsSearchView = () => {
   const search = useSelector((state) => state.advancedCards.searchParams)
   const error = useSelector((state) => state.advancedCards.error)
-  console.log(error)
+  // console.log(error)
   const dispatch = useDispatch()
 
   const initialValues = {
@@ -33,7 +40,10 @@ const AdvancedCardsSearchView = () => {
     color: '*',
     variations: false,
     includeExtras: false,
-    rarity: 'uncommon'
+    rarity: 'common',
+    order: 'cmc',
+    dir: 'desc',
+    unique: 'cards'
   }
 
   useEffect(() => {
@@ -44,8 +54,6 @@ const AdvancedCardsSearchView = () => {
     // console.log(values)
     dispatch(setAdvancedSearchParams({ ...initialValues, ...values }))
   }
-
-  // console.log(search)
 
   return (
     <>
@@ -66,62 +74,117 @@ const AdvancedCardsSearchView = () => {
         <Form
           initialValues={initialValues}
           onSubmit={onSubmit}
-          render={({ handleSubmit, form, submitting, pristine, values }) => (
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label>Card name</label>
-                <Field
-                  name="cardName"
-                  component="input"
-                  placeholder="card name"
-                  value={values.cardName}
-                />
-              </div>
-              <div>
-                <label>Include variations</label>
-                <Field name="variations" component="input" type="checkbox" />
-                <label>Include extras</label>
-                <Field name="includeExtras" component="input" type="checkbox" />
-              </div>
-              <div>
-                <label>Color</label>
-                <Field name="color" component="select">
-                  <option />
-                  <option value="*">All</option>
-                  <option value="white">White</option>
-                  <option value="red">Red</option>
-                  <option value="green">Green</option>
-                  <option value="blue">Blue</option>
-                  <option value="black">Black</option>
-                  <option value="multicolor">multicolor</option>
-                  <option value="colorless">colorless</option>
-                </Field>
-              </div>
-              <div>
-                <label>Rarity</label>
-                <Field name="rarity" component="select">
-                  <option />
-                  <option value="common">Common</option>
-                  <option value="uncommon">Uncommon</option>
-                  <option value="rare">Rare</option>
-                  <option value="mythic">Mythic</option>
-                </Field>
-              </div>
-              {/* //buttons  */}
-              <div className="buttons">
-                <button type="submit" disabled={submitting || pristine}>
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  onClick={form.reset}
-                  disabled={submitting || pristine}
-                >
-                  Reset
-                </button>
-              </div>
-            </form>
-          )}
+          render={({ handleSubmit, form, submitting, pristine, values }) => {
+            console.log(values)
+            // console.log(form.getState())
+            // console.log(form)
+            return (
+              <form onSubmit={handleSubmit}>
+                <Segment style={{ display: 'flex' }}>
+                  <Field name="cardName">
+                    {(props) => {
+                      return (
+                        <SemanticForm.Field>
+                          <label>Card name</label>
+                          <Input
+                            {...props.input}
+                            placeholder="eg: norn, nezumi..."
+                          />
+                        </SemanticForm.Field>
+                      )
+                    }}
+                  </Field>
+                  <div>
+                    <label>Color</label>
+                    <Dropdown
+                      name="color"
+                      value={values.color}
+                      placeholder="Color"
+                      selection
+                      options={colorsOptions}
+                      onChange={(e, { value }) => {
+                        form.change('color', value)
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label>Rarity</label>
+                    <Dropdown
+                      name="rarity"
+                      value={values.rarity}
+                      placeholder="Rarity"
+                      selection
+                      options={rarityOptions}
+                      onChange={(e, { value }) => {
+                        form.change('rarity', value)
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label>Prints</label>
+                    <Dropdown
+                      name="unique"
+                      value={values.unique}
+                      selection
+                      options={uniqueOptions}
+                      onChange={(e, { value }) => {
+                        form.change('unique', value)
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Checkbox
+                      name="variations"
+                      label="Variations"
+                      onChange={(e, { checked }) => {
+                        form.change('variations', checked)
+                      }}
+                      checked={values.variations}
+                    />
+                    <Checkbox
+                      name="includeExtras"
+                      label="Extras"
+                      onChange={(e, { checked }) => {
+                        form.change('includeExtras', checked)
+                      }}
+                      checked={values.includeExtras}
+                    />
+                  </div>
+                </Segment>
+                <Segment style={{ display: 'flex', alignItems: 'center' }}>
+                  <label>Order</label>
+                  <Dropdown
+                    name="order"
+                    value={values.order}
+                    selection
+                    options={orderOptions}
+                    onChange={(e, { value }) => {
+                      dispatch(fetchAdvancedCards({ ...values, order: value }))
+                      // form.change('order', value)
+                    }}
+                  />
+                  <div>
+                    <Radio
+                      toggle
+                      checked={values.dir === 'desc'}
+                      onChange={(e, { checked }) => {
+                        const dir = checked ? 'desc' : 'asc'
+                        form.change('dir', dir)
+                        dispatch(fetchAdvancedCards({ ...values, dir }))
+                      }}
+                    />
+                  </div>
+                </Segment>
+                {/* //buttons  */}
+                <div className="buttons">
+                  <Button type="submit">Submit</Button>
+                  <Button type="button" onClick={form.reset}>
+                    Reset
+                  </Button>
+                </div>
+              </form>
+            )
+          }}
         />
       </Segment>
 

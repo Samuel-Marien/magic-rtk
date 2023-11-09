@@ -11,7 +11,10 @@ const initialState = {
     color: '*',
     variations: false,
     includeExtras: false,
-    rarity: 'uncommon'
+    rarity: 'common',
+    order: 'cmc',
+    dir: 'desc',
+    unique: 'cards'
   }
 }
 const url = 'https://api.scryfall.com/cards/search'
@@ -22,13 +25,13 @@ export const fetchAdvancedCards = createAsyncThunk(
     // console.log(datas)
     try {
       const response = await axios.get(
-        `${url}?order=cmc&include_variations=${
+        `${url}?order=${datas.order}&include_variations=${
           datas.variations
-        }&include_extras=${datas.includeExtras}&unique=prints&dir=asc&q=${
-          datas.cardName
-        }${datas.color !== '*' ? `+c%3A${datas.color}` : `+c%3A*`}${
-          datas.rarity && `+rarity%3A${datas.rarity}`
-        }`
+        }&include_extras=${datas.includeExtras}&unique=${datas.unique}&dir=${
+          datas.dir
+        }&q=${datas.cardName}${
+          datas.color !== '*' ? `+c%3A${datas.color}` : `+c%3A*`
+        }${datas.rarity && `+rarity%3A${datas.rarity}`}`
       )
       return response.data
     } catch (error) {

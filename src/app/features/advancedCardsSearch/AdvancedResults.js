@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Card, Image } from 'semantic-ui-react'
+import { Card, Image, Segment } from 'semantic-ui-react'
 
 import Loaders from '../../../components/Loaders'
 
@@ -10,7 +10,7 @@ const AdvancedResult = () => {
   const { isLoading, cards, totalCards, error } = useSelector(
     (state) => state.advancedCards
   )
-  console.log(error)
+  // console.log(error)
 
   const [cardStyles, setCardStyles] = useState({})
   const [flippedCards, setFlippedCards] = useState([])
@@ -78,7 +78,7 @@ const AdvancedResult = () => {
     setImageSources(updatedSources)
   }
   return (
-    <div>
+    <Segment>
       {isLoading && <Loaders />}
       {error && <p>{error}</p>}
       <Card.Group
@@ -114,7 +114,7 @@ const AdvancedResult = () => {
               )
             })}
       </Card.Group>
-    </div>
+    </Segment>
   )
 }
 
