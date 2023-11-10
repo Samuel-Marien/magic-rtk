@@ -3,18 +3,27 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   isLoading: false,
+  isSuccess: false,
   cards: [],
   totalCards: 0,
   error: null,
   searchParams: {
-    cardName: '*',
+    cardName: '',
     color: '*',
     variations: false,
     includeExtras: false,
-    rarity: 'common',
-    order: 'cmc',
+    rarity: '*',
+    order: 'released',
     dir: 'desc',
-    unique: 'cards'
+    unique: 'arts',
+    power: {
+      powerValue: 0,
+      isActive: false
+    },
+    toughness: {
+      toughnessValue: 0,
+      isActive: false
+    }
   }
 }
 const url = 'https://api.scryfall.com/cards/search'
@@ -22,16 +31,24 @@ const url = 'https://api.scryfall.com/cards/search'
 export const fetchAdvancedCards = createAsyncThunk(
   'advancedCards/fetchAdvancedCards',
   async (datas, { rejectWithValue }) => {
+    const {
+      cardName,
+      color,
+      variations,
+      includeExtras,
+      rarity,
+      order,
+      dir,
+      unique
+    } = datas
     // console.log(datas)
     try {
       const response = await axios.get(
-        `${url}?order=${datas.order}&include_variations=${
-          datas.variations
-        }&include_extras=${datas.includeExtras}&unique=${datas.unique}&dir=${
-          datas.dir
-        }&q=${datas.cardName}${
-          datas.color !== '*' ? `+c%3A${datas.color}` : `+c%3A*`
-        }${datas.rarity && `+rarity%3A${datas.rarity}`}`
+        `${url}?order=${order}&include_variations=${variations}&include_extras=${includeExtras}&unique=${unique}&dir=${dir}&q=${
+          cardName === '' ? '*' : cardName
+        }${color !== '*' ? `+c%3A${color}` : `+c%3A*`}${
+          rarity && `+rarity%3A${rarity}`
+        }`
       )
       return response.data
     } catch (error) {
@@ -55,6 +72,7 @@ const advancedCardsSlice = createSlice({
     })
     builder.addCase(fetchAdvancedCards.fulfilled, (state, action) => {
       state.isLoading = false
+      state.isSuccess = true
       state.cards = action.payload.data
       state.totalCards = action.payload.total_cards
       state.error = ''

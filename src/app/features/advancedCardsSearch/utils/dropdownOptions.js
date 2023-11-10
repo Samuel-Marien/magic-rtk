@@ -10,6 +10,7 @@ export const colorsOptions = [
 ]
 
 export const rarityOptions = [
+  { key: 0, text: 'All', value: '*' },
   { key: 1, text: 'Common', value: 'common' },
   { key: 2, text: 'Uncommon', value: 'uncommon' },
   { key: 3, text: 'Rare', value: 'rare' },
@@ -28,6 +29,6 @@ export const orderOptions = [
 
 export const uniqueOptions = [
   { key: 1, text: 'Cards', value: 'cards' },
-  { key: 2, text: 'Art', value: 'art' },
+  { key: 2, text: 'Arts', value: 'arts' },
   { key: 3, text: 'Prints', value: 'prints' }
 ]

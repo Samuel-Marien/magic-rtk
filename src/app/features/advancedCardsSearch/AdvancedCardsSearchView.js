@@ -21,7 +21,6 @@ import {
 import {
   colorsOptions,
   rarityOptions,
-  orderOptions,
   uniqueOptions
 } from './utils/dropdownOptions'
 
@@ -31,8 +30,8 @@ import Loaders from '../../../components/Loaders'
 
 const AdvancedCardsSearchView = () => {
   const search = useSelector((state) => state.advancedCards.searchParams)
-  const error = useSelector((state) => state.advancedCards.error)
-  // console.log(error)
+  console.log(search)
+
   const dispatch = useDispatch()
 
   const initialValues = {
@@ -40,10 +39,10 @@ const AdvancedCardsSearchView = () => {
     color: '*',
     variations: false,
     includeExtras: false,
-    rarity: 'common',
-    order: 'cmc',
+    rarity: '*',
+    order: 'released',
     dir: 'desc',
-    unique: 'cards'
+    unique: 'arts'
   }
 
   useEffect(() => {
@@ -70,12 +69,11 @@ const AdvancedCardsSearchView = () => {
       </Header>
 
       <Segment>
-        {error && <p>Une erreur s'est produite : {error}</p>}
         <Form
           initialValues={initialValues}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => {
-            console.log(values)
+            // console.log(values)
             // console.log(form.getState())
             // console.log(form)
             return (
@@ -112,7 +110,7 @@ const AdvancedCardsSearchView = () => {
                     <Dropdown
                       name="rarity"
                       value={values.rarity}
-                      placeholder="Rarity"
+                      placeholder="All"
                       selection
                       options={rarityOptions}
                       onChange={(e, { value }) => {
@@ -121,7 +119,7 @@ const AdvancedCardsSearchView = () => {
                     />
                   </div>
                   <div>
-                    <label>Prints</label>
+                    <label>Unique</label>
                     <Dropdown
                       name="unique"
                       value={values.unique}
@@ -151,30 +149,6 @@ const AdvancedCardsSearchView = () => {
                     />
                   </div>
                 </Segment>
-                <Segment style={{ display: 'flex', alignItems: 'center' }}>
-                  <label>Order</label>
-                  <Dropdown
-                    name="order"
-                    value={values.order}
-                    selection
-                    options={orderOptions}
-                    onChange={(e, { value }) => {
-                      dispatch(fetchAdvancedCards({ ...values, order: value }))
-                      // form.change('order', value)
-                    }}
-                  />
-                  <div>
-                    <Radio
-                      toggle
-                      checked={values.dir === 'desc'}
-                      onChange={(e, { checked }) => {
-                        const dir = checked ? 'desc' : 'asc'
-                        form.change('dir', dir)
-                        dispatch(fetchAdvancedCards({ ...values, dir }))
-                      }}
-                    />
-                  </div>
-                </Segment>
                 {/* //buttons  */}
                 <div className="buttons">
                   <Button type="submit">Submit</Button>
@@ -182,13 +156,12 @@ const AdvancedCardsSearchView = () => {
                     Reset
                   </Button>
                 </div>
+                <AdvancedResult form={form} />
               </form>
             )
           }}
         />
       </Segment>
-
-      <AdvancedResult />
     </>
   )
 }

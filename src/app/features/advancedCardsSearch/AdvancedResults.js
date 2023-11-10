@@ -1,20 +1,30 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Card, Image, Segment } from 'semantic-ui-react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Card, Image, Segment, Dropdown, Radio } from 'semantic-ui-react'
+
+import { orderOptions } from './utils/dropdownOptions'
+import { fetchAdvancedCards } from './advancedCardsSearchSlice'
 
 import Loaders from '../../../components/Loaders'
 
-const AdvancedResult = () => {
-  // const cards = useSelector((state) => state.advancedCards.cards)
-  // const error = useSelector((state) => state.advancedCards.error)
-  const { isLoading, cards, totalCards, error } = useSelector(
+const AdvancedResult = (props) => {
+  const { form } = props
+
+  const search = useSelector((state) => state.advancedCards.searchParams)
+  const { isLoading, isSuccess, cards, totalCards, error } = useSelector(
     (state) => state.advancedCards
   )
-  // console.log(error)
+  console.log(error)
+  // console.log(search)
+  // console.log(form.getState().values)
 
   const [cardStyles, setCardStyles] = useState({})
   const [flippedCards, setFlippedCards] = useState([])
   const [imageSources, setImageSources] = useState({})
+  const [dropdownValue, setDropdownValue] = useState(search.order)
+  const [dirValue, setDirValue] = useState(search.dir)
+
+  const dispatch = useDispatch()
 
   const rarityToBorder = (rarity) => {
     switch (rarity) {
@@ -79,6 +89,36 @@ const AdvancedResult = () => {
   }
   return (
     <Segment>
+      <Segment style={{ display: 'flex', alignItems: 'center' }}>
+        <label>Order</label>
+        <Dropdown
+          name="order"
+          value={dropdownValue}
+          selection
+          options={orderOptions}
+          onChange={(e, { value }) => {
+            dispatch(
+              fetchAdvancedCards({ ...search, dir: dirValue, order: value })
+            )
+            form.change('order', value)
+            setDropdownValue(value)
+          }}
+        />
+        <div>
+          <Radio
+            toggle
+            checked={form.getState().values.dir === 'desc' ? true : false}
+            onChange={(e, { checked }) => {
+              const dir = checked ? 'desc' : 'asc'
+              dispatch(
+                fetchAdvancedCards({ ...search, order: dropdownValue, dir })
+              )
+              form.change('dir', dir)
+              setDirValue(dir)
+            }}
+          />
+        </div>
+      </Segment>
       {isLoading && <Loaders />}
       {error && <p>{error}</p>}
       <Card.Group
@@ -88,7 +128,7 @@ const AdvancedResult = () => {
         }}
       >
         {/* View for non-flipped Cards */}
-        {cards &&
+        {isSuccess &&
           cards
             .filter((card) => card.card_faces === undefined)
             .map((card) => {
@@ -97,6 +137,7 @@ const AdvancedResult = () => {
                   key={card.id}
                   href={`/card-details/${card.id}`}
                   style={{
+                    width: '14rem',
                     border: `3px solid ${rarityToBorder(card.rarity)}`,
                     borderRadius: '10px',
                     height: '90%'
