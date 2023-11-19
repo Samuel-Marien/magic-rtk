@@ -118,3 +118,62 @@ export const toughnessOptions = [
   { key: 37, text: '20', value: '20' },
   { key: 38, text: '99', value: '99' }
 ]
+
+export const manaValueOptions = [
+  { key: 1, text: '?', value: '?' },
+  { key: 2, text: '0', value: '0' },
+  { key: 3, text: '1', value: '1' },
+  { key: 4, text: '2', value: '2' },
+  { key: 5, text: '3', value: '3' },
+  { key: 6, text: '4', value: '4' },
+  { key: 7, text: '5', value: '5' },
+  { key: 8, text: '6', value: '6' },
+  { key: 9, text: '7', value: '7' },
+  { key: 10, text: '8', value: '8' },
+  { key: 11, text: '9', value: '9' },
+  { key: 12, text: '10', value: '10' },
+  { key: 13, text: '11', value: '11' },
+  { key: 14, text: '12', value: '12' },
+  { key: 15, text: '13', value: '13' },
+  { key: 16, text: '14', value: '14' },
+  { key: 17, text: '15', value: '15' },
+  { key: 18, text: '16', value: '16' },
+  { key: 19, text: '17', value: '17' },
+  { key: 20, text: '18', value: '18' },
+  { key: 21, text: '19', value: '19' },
+  { key: 22, text: '20', value: '20' },
+  { key: 23, text: '99', value: '99' }
+]
+
+export const dropdownOptionsArray = [
+  {
+    name: 'power',
+    iconName: 'grab',
+    options: powerOptions
+  },
+  {
+    name: 'toughness',
+    iconName: 'shield',
+    options: toughnessOptions
+  },
+  {
+    name: 'color',
+    iconName: 'magic',
+    options: colorsOptions
+  },
+  {
+    name: 'rarity',
+    iconName: 'star',
+    options: rarityOptions
+  },
+  {
+    name: 'manaValue',
+    iconName: 'hand paper outline',
+    options: manaValueOptions
+  },
+  {
+    name: 'unique',
+    iconName: 'universal access',
+    options: uniqueOptions
+  }
+]

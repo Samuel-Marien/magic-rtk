@@ -20,7 +20,7 @@ const CardSearch = () => {
       }}
     >
       <Navbar />
-      <Container fluid style={{ padding: '0 5% 0 5%' }}>
+      <Container fluid style={{ padding: '2% 5% 0 5%' }}>
         <AdvancedCardsSearchView />
       </Container>
     </div>

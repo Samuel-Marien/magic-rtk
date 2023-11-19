@@ -3,14 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { Form, Field } from 'react-final-form'
 import {
-  Dropdown,
   Input,
   Header,
   Segment,
   Button,
-  Radio,
   Checkbox,
-  Label,
   Grid,
   Form as SemanticForm
 } from 'semantic-ui-react'
@@ -20,15 +17,10 @@ import {
   setAdvancedSearchParams
 } from './advancedCardsSearchSlice'
 
-import {
-  colorsOptions,
-  rarityOptions,
-  uniqueOptions,
-  powerOptions,
-  toughnessOptions
-} from './utils/dropdownOptions'
+import { dropdownOptionsArray } from './utils/dropdownOptions'
 
 import AdvancedResult from './AdvancedResults'
+import MyDropdown from './MyDropdown'
 
 import Loaders from '../../../components/Loaders'
 
@@ -52,6 +44,23 @@ const AdvancedCardsSearchView = () => {
     manaValue: '?'
   }
 
+  // For easly splitted the dropdowns in 2 rows
+  const renderGridRow = (options, form, values) => {
+    return (
+      <Grid.Row>
+        {options.map((option) => (
+          <MyDropdown
+            form={form}
+            values={values}
+            name={option.name}
+            iconName={option.iconName}
+            options={option.options}
+          />
+        ))}
+      </Grid.Row>
+    )
+  }
+
   useEffect(() => {
     dispatch(fetchAdvancedCards(search))
   }, [search, dispatch, initialValues])
@@ -63,18 +72,6 @@ const AdvancedCardsSearchView = () => {
 
   return (
     <>
-      <Header
-        as="h1"
-        style={{
-          color: 'white',
-          marginRight: '2rem',
-          marginTop: '4rem',
-          marginBottom: '2rem'
-        }}
-      >
-        Advanced cards search
-      </Header>
-
       <Segment>
         <Form
           initialValues={initialValues}
@@ -86,6 +83,7 @@ const AdvancedCardsSearchView = () => {
             return (
               <form onSubmit={handleSubmit}>
                 <Grid columns={8} divided style={{ display: 'flex' }}>
+                  {/* Serach by name  */}
                   <Grid.Row>
                     <Field name="cardName">
                       {(props) => {
@@ -100,88 +98,23 @@ const AdvancedCardsSearchView = () => {
                         )
                       }}
                     </Field>
+                  </Grid.Row>
 
-                    <SemanticForm.Field name="power">
-                      <Label>Power</Label>
-                      <Dropdown
-                        name="power"
-                        value={values.power}
-                        placeholder="Power"
-                        selection
-                        options={powerOptions}
-                        onChange={(e, { value }) => {
-                          form.change('power', value)
-                        }}
-                      />
-                    </SemanticForm.Field>
-                    <SemanticForm.Field name="toughness">
-                      <Label>Toughness</Label>
-                      <Dropdown
-                        name="toughness"
-                        value={values.toughness}
-                        placeholder="Toughness"
-                        selection
-                        options={toughnessOptions}
-                        onChange={(e, { value }) => {
-                          form.change('toughness', value)
-                        }}
-                      />
-                    </SemanticForm.Field>
+                  {/* dropdaown options splitted */}
+                  {renderGridRow(
+                    dropdownOptionsArray.slice(0, 3),
+                    form,
+                    values
+                  )}
+                  {renderGridRow(
+                    dropdownOptionsArray.slice(3, 6),
+                    form,
+                    values
+                  )}
 
-                    <Field name="manaValue">
-                      {(props) => {
-                        return (
-                          <SemanticForm.Field>
-                            <Input
-                              min={0}
-                              placeholder="eg: 1, 3, 7..."
-                              label="Mana value"
-                              type="text"
-                              {...props.input}
-                            />
-                          </SemanticForm.Field>
-                        )
-                      }}
-                    </Field>
-                    <div>
-                      <Label>Color</Label>
-                      <Dropdown
-                        name="color"
-                        value={values.color}
-                        placeholder="Color"
-                        selection
-                        options={colorsOptions}
-                        onChange={(e, { value }) => {
-                          form.change('color', value)
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <Label>Rarity</Label>
-                      <Dropdown
-                        name="rarity"
-                        value={values.rarity}
-                        placeholder="All"
-                        selection
-                        options={rarityOptions}
-                        onChange={(e, { value }) => {
-                          form.change('rarity', value)
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <Label>Unique</Label>
-                      <Dropdown
-                        name="unique"
-                        value={values.unique}
-                        selection
-                        options={uniqueOptions}
-                        onChange={(e, { value }) => {
-                          form.change('unique', value)
-                        }}
-                      />
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {/* Checkbox options  */}
+                  <Grid.Row>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
                       <Checkbox
                         name="variations"
                         label="Variations"
@@ -201,8 +134,9 @@ const AdvancedCardsSearchView = () => {
                     </div>
                   </Grid.Row>
                 </Grid>
-                {/* //buttons  */}
-                <div className="buttons">
+
+                {/* buttons  */}
+                <div>
                   <Button type="submit">Submit</Button>
                   <Button type="button" onClick={form.reset}>
                     Reset
