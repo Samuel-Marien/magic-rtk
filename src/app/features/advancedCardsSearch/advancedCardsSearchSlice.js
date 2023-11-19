@@ -16,14 +16,9 @@ const initialState = {
     order: 'released',
     dir: 'desc',
     unique: 'arts',
-    power: {
-      powerValue: 0,
-      isActive: false
-    },
-    toughness: {
-      toughnessValue: 0,
-      isActive: false
-    }
+    power: 'All',
+    toughness: 'All',
+    manaValue: '?'
   }
 }
 const url = 'https://api.scryfall.com/cards/search'
@@ -39,16 +34,23 @@ export const fetchAdvancedCards = createAsyncThunk(
       rarity,
       order,
       dir,
-      unique
+      unique,
+      power,
+      toughness,
+      manaValue
     } = datas
+
     // console.log(datas)
+    // to do : adjust default values for : power, toughness, manaValue
     try {
       const response = await axios.get(
         `${url}?order=${order}&include_variations=${variations}&include_extras=${includeExtras}&unique=${unique}&dir=${dir}&q=${
           cardName === '' ? '*' : cardName
         }${color !== '*' ? `+c%3A${color}` : `+c%3A*`}${
           rarity && `+rarity%3A${rarity}`
-        }`
+        }${power !== '?' && `+power%3A${power}`}${
+          toughness !== '?' && `+toughness%3A${toughness}`
+        }+mv%3D${manaValue}`
       )
       return response.data
     } catch (error) {

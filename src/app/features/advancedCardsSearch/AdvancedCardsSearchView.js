@@ -10,6 +10,8 @@ import {
   Button,
   Radio,
   Checkbox,
+  Label,
+  Grid,
   Form as SemanticForm
 } from 'semantic-ui-react'
 
@@ -21,7 +23,9 @@ import {
 import {
   colorsOptions,
   rarityOptions,
-  uniqueOptions
+  uniqueOptions,
+  powerOptions,
+  toughnessOptions
 } from './utils/dropdownOptions'
 
 import AdvancedResult from './AdvancedResults'
@@ -42,7 +46,10 @@ const AdvancedCardsSearchView = () => {
     rarity: '*',
     order: 'released',
     dir: 'desc',
-    unique: 'arts'
+    unique: 'arts',
+    power: '∞',
+    toughness: '∞',
+    manaValue: '?'
   }
 
   useEffect(() => {
@@ -78,77 +85,122 @@ const AdvancedCardsSearchView = () => {
             // console.log(form)
             return (
               <form onSubmit={handleSubmit}>
-                <Segment style={{ display: 'flex' }}>
-                  <Field name="cardName">
-                    {(props) => {
-                      return (
-                        <SemanticForm.Field>
-                          <label>Card name</label>
-                          <Input
-                            {...props.input}
-                            placeholder="eg: norn, nezumi..."
-                          />
-                        </SemanticForm.Field>
-                      )
-                    }}
-                  </Field>
-                  <div>
-                    <label>Color</label>
-                    <Dropdown
-                      name="color"
-                      value={values.color}
-                      placeholder="Color"
-                      selection
-                      options={colorsOptions}
-                      onChange={(e, { value }) => {
-                        form.change('color', value)
+                <Grid columns={8} divided style={{ display: 'flex' }}>
+                  <Grid.Row>
+                    <Field name="cardName">
+                      {(props) => {
+                        return (
+                          <SemanticForm.Field>
+                            <Input
+                              label="Card name"
+                              {...props.input}
+                              placeholder="eg: norn, nezumi..."
+                            />
+                          </SemanticForm.Field>
+                        )
                       }}
-                    />
-                  </div>
-                  <div>
-                    <label>Rarity</label>
-                    <Dropdown
-                      name="rarity"
-                      value={values.rarity}
-                      placeholder="All"
-                      selection
-                      options={rarityOptions}
-                      onChange={(e, { value }) => {
-                        form.change('rarity', value)
+                    </Field>
+
+                    <SemanticForm.Field name="power">
+                      <Label>Power</Label>
+                      <Dropdown
+                        name="power"
+                        value={values.power}
+                        placeholder="Power"
+                        selection
+                        options={powerOptions}
+                        onChange={(e, { value }) => {
+                          form.change('power', value)
+                        }}
+                      />
+                    </SemanticForm.Field>
+                    <SemanticForm.Field name="toughness">
+                      <Label>Toughness</Label>
+                      <Dropdown
+                        name="toughness"
+                        value={values.toughness}
+                        placeholder="Toughness"
+                        selection
+                        options={toughnessOptions}
+                        onChange={(e, { value }) => {
+                          form.change('toughness', value)
+                        }}
+                      />
+                    </SemanticForm.Field>
+
+                    <Field name="manaValue">
+                      {(props) => {
+                        return (
+                          <SemanticForm.Field>
+                            <Input
+                              min={0}
+                              placeholder="eg: 1, 3, 7..."
+                              label="Mana value"
+                              type="text"
+                              {...props.input}
+                            />
+                          </SemanticForm.Field>
+                        )
                       }}
-                    />
-                  </div>
-                  <div>
-                    <label>Unique</label>
-                    <Dropdown
-                      name="unique"
-                      value={values.unique}
-                      selection
-                      options={uniqueOptions}
-                      onChange={(e, { value }) => {
-                        form.change('unique', value)
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <Checkbox
-                      name="variations"
-                      label="Variations"
-                      onChange={(e, { checked }) => {
-                        form.change('variations', checked)
-                      }}
-                      checked={values.variations}
-                    />
-                    <Checkbox
-                      name="includeExtras"
-                      label="Extras"
-                      onChange={(e, { checked }) => {
-                        form.change('includeExtras', checked)
-                      }}
-                      checked={values.includeExtras}
-                    />
-                  </div>
-                </Segment>
+                    </Field>
+                    <div>
+                      <Label>Color</Label>
+                      <Dropdown
+                        name="color"
+                        value={values.color}
+                        placeholder="Color"
+                        selection
+                        options={colorsOptions}
+                        onChange={(e, { value }) => {
+                          form.change('color', value)
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label>Rarity</Label>
+                      <Dropdown
+                        name="rarity"
+                        value={values.rarity}
+                        placeholder="All"
+                        selection
+                        options={rarityOptions}
+                        onChange={(e, { value }) => {
+                          form.change('rarity', value)
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label>Unique</Label>
+                      <Dropdown
+                        name="unique"
+                        value={values.unique}
+                        selection
+                        options={uniqueOptions}
+                        onChange={(e, { value }) => {
+                          form.change('unique', value)
+                        }}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <Checkbox
+                        name="variations"
+                        label="Variations"
+                        onChange={(e, { checked }) => {
+                          form.change('variations', checked)
+                        }}
+                        checked={values.variations}
+                      />
+                      <Checkbox
+                        name="includeExtras"
+                        label="Extras"
+                        onChange={(e, { checked }) => {
+                          form.change('includeExtras', checked)
+                        }}
+                        checked={values.includeExtras}
+                      />
+                    </div>
+                  </Grid.Row>
+                </Grid>
                 {/* //buttons  */}
                 <div className="buttons">
                   <Button type="submit">Submit</Button>
